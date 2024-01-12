@@ -37,6 +37,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/", "/antto").permitAll()
                         .requestMatchers("/", "/products").permitAll()
                         .requestMatchers("/", "/cart").permitAll()
+                        .requestMatchers("/", "/logout").permitAll()
                         .anyRequest().fullyAuthenticated()
                 )
                 .httpBasic(withDefaults())

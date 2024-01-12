@@ -1,6 +1,8 @@
 package org.fakestore3;
 
 import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.fakestore3.entitys.Basket;
 import org.fakestore3.entitys.Orders;
 import org.fakestore3.interfaces.*;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,10 +84,22 @@ public class HomeController {
         return ResponseEntity.ok().body("ok");
     }
 
+    SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+
+    @CrossOrigin("*")
+    @PostMapping("/logout")
+    public String performLogout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
+        // .. perform logout
+
+        System.err.println("logout");
+
+        return "redirect:/";
+    }
+
     @CrossOrigin("*")
     @PutMapping(value = "/cart")
     @ResponseBody
-    public ResponseEntity PutCart(@RequestBody Basket basket) {
+    public ResponseEntity PutCart(Authentication authentication, HttpServletRequest request, HttpServletResponse response, @RequestBody Basket basket) {
         cartRepo.save(basket);
         return ResponseEntity.ok().body("ok");
 

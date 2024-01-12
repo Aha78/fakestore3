@@ -35,9 +35,11 @@ export default function Basket() {
               <Button variant="contained" color="error" onClick={() => {
 
 
-                axios.post('http://localhost:8080/cart', { "id": tier.id, "name": "antto" }).then(function (response) {
+                axios.post('http://localhost:8080/cart', { "id": tier.id, "name": "" }).then(function (response) {
 
                 });
+
+              
                 window.location.reload(false);
               }
 
