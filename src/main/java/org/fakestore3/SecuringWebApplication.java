@@ -28,17 +28,11 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 
-
-
-
 @SpringBootApplication
 public class SecuringWebApplication {
-
-	public static void main(String[] args) throws Throwable {
-		SpringApplication.run(SecuringWebApplication.class, args);
-	}
-
-
+    public static void main(String[] args) throws Throwable {
+        SpringApplication.run(SecuringWebApplication.class, args);
+    }
 
 }
 
