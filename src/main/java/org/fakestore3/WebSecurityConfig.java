@@ -1,23 +1,38 @@
 package org.fakestore3;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.*;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 
 import javax.sql.DataSource;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive.*;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
     @Autowired
     DataSource dataSource;
+    private static final ClearSiteDataHeaderWriter.Directive[] SOURCE =
+            {CACHE, COOKIES, STORAGE, EXECUTION_CONTEXTS};
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
@@ -33,15 +48,63 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
+
+                                .requestMatchers("/", "/login").permitAll()
+                                .requestMatchers("/", "/store").authenticated()
+                                .requestMatchers("/", "/basket").authenticated()
+/*
                         .requestMatchers("/", "/home").permitAll()
-                        .requestMatchers("/", "/antto").permitAll()
                         .requestMatchers("/", "/products").permitAll()
                         .requestMatchers("/", "/cart").permitAll()
                         .requestMatchers("/", "/logout").permitAll()
-                        .anyRequest().fullyAuthenticated()
+
+                        */
+                        .requestMatchers( "/user").hasRole("*").anyRequest().permitAll()
+
+
+
+
                 )
-                .httpBasic(withDefaults())
-                .logout((logout) -> logout.permitAll());
+
+
+                .httpBasic(withDefaults());
+
+
+
+
+
+        http.csrf(csrf -> csrf.disable())
+
+
+                .logout(logout -> logout.logoutUrl("/logout")
+
+
+                                .addLogoutHandler((request, response, auth) -> {
+
+                                    System.err.println("auth=" +  request.getHeaderNames());
+                                    for (Cookie cookie : request.getCookies()) {
+
+                                        System.err.println(cookie.getName());
+                                        String cookieName = cookie.getName();
+                                        Cookie cookieToDelete = new Cookie(cookieName, null);
+                                        cookieToDelete.setMaxAge(0);
+                                        response.addCookie(cookieToDelete);
+                                    }
+                                    request.getSession(false).invalidate();
+                                    return;
+                                })
+                        );
+
+
+
+
+
+        http
+                .csrf().disable()
+                .formLogin()
+                .loginPage("/login");
+
+
         return http.build();
     }
 

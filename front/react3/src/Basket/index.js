@@ -65,8 +65,10 @@ export default function Basket() {
       ))}
       <p>Ostokori yhteensä  <b>{(price + 0.005).toFixed(2)}</b> euroa</p>
       <Button variant="contained" color="success" onClick={() => {
+              axios.post('http://localhost:8080/logout');
         alert('Tuotteet tilattu');
         axios.post('http://localhost:8080/order');
+
       }}>Tilaa</Button>
     </>
 

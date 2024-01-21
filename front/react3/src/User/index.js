@@ -37,7 +37,7 @@ export default function UserAuth() {
 
 
 
-          fetch("http://127.0.0.1:8080/greeting3")
+
           fetch("http://127.0.0.1:8080/users",
             {
               headers: {
@@ -58,6 +58,7 @@ export default function UserAuth() {
             .catch(function (res) { console.log(res) })
 
           alert('clicked=' + username + " " + password);
+     
         }
 
 

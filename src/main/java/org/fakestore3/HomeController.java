@@ -57,21 +57,28 @@ public class HomeController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "/login")
+    public  String login(){
+            return  "login";
+    }
+
     @GetMapping(value = "/products")
     public ResponseEntity get(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size) {
         PaginationDao paginationDao = new PaginationDao();
         paginationDao.setProductRepository(productrepo);
         return ResponseEntity.ok().body(paginationDao.pagination(page, size));
     }
-
+    SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
     @CrossOrigin("*")
     @PostMapping(value = "/order")
     @ResponseBody
-    public ResponseEntity  order(final Model model, Authentication auth) {
+    public ResponseEntity  order(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
         OrderDao orderDao=new OrderDao();
         orderDao.setOrderRepo(orderRepo);
         orderDao.setCartRepo(cartRepo);
-        orderDao.order(auth.getName());
+        orderDao.order(authentication.getName());
+        logoutHandler.logout(request,response,authentication);
+
         return ResponseEntity.ok().body("ok");
     }
 
@@ -84,17 +91,9 @@ public class HomeController {
         return ResponseEntity.ok().body("ok");
     }
 
-    SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
-    @CrossOrigin("*")
-    @PostMapping("/logout")
-    public String performLogout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
-        // .. perform logout
 
-        System.err.println("logout");
 
-        return "redirect:/";
-    }
 
     @CrossOrigin("*")
     @PutMapping(value = "/cart")

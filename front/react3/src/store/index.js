@@ -20,6 +20,7 @@ import Stack from '@mui/material/Stack';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import EuroIcon from '@mui/icons-material/Euro';
 import Popup from 'reactjs-popup';
+import { Link } from 'react-router-dom';
 
 
 import axios from 'axios';
@@ -60,6 +61,9 @@ export default function Store() {
                 sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
             >
                 <em> Fakestore  <a href="/Basket" ><AddShoppingCartIcon />Näytä ostoskori</a> </em>
+                 <em> Fakestore  <a href="/logout"  >roskakori </a></em>
+
+                 
             </AppBar>
 
             <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
