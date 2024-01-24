@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
-
+import axios from 'axios';
 
 export default function UserAuth() {
 
@@ -36,26 +36,8 @@ export default function UserAuth() {
         <Button variant="contained" color="success" onClick={() => {
 
 
+      axios.put('http://localhost:8080/user',{"username": username,"password": password,"role": "ROLE_USER","enabled": 1});
 
-
-          fetch("http://127.0.0.1:8080/users",
-            {
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              method: "put",
-              body: {
-
-                "username": username,
-                "password": password,
-                "role": "ROLE_USER",
-                "enabled": 1
-
-              }
-            })
-            .then(function (res) { console.log(res) })
-            .catch(function (res) { console.log(res) })
 
           alert('clicked=' + username + " " + password);
      

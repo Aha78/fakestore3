@@ -60,10 +60,11 @@ export default function Store() {
                 elevation={0}
                 sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
             >
+                <>
                 <em> Fakestore  <a href="/Basket" ><AddShoppingCartIcon />Näytä ostoskori</a> </em>
-                 <em> Fakestore  <a href="/logout"  >roskakori </a></em>
+                 <a href="/logout"   class="btn btn-success" >Kirjaudu ulos </a>
+                   </>
 
-                 
             </AppBar>
 
             <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>

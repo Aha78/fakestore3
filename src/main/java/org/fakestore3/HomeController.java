@@ -47,7 +47,7 @@ public class HomeController {
 
 
     @CrossOrigin("*")
-    @PutMapping("/users")
+    @PutMapping("/user")
     @ResponseBody
     public ResponseEntity users(@RequestBody Users user) {
 

@@ -13,7 +13,10 @@ import {
 } from "react-router-dom";
 
 
+function Index ()  {
 
+return (<a href="/store">Siirry fakestoreen</a>)
+}
 
 
 function App() {
@@ -21,6 +24,8 @@ function App() {
 
     <BrowserRouter>
     <Routes>
+
+          <Route path="/" element={<Index/>}></Route>
       <Route path="/store" element={<Store/>}></Route>
       <Route path="/basket" element={<Basket/>}></Route>
       <Route path="/user" element={<UserAuth/>}></Route>

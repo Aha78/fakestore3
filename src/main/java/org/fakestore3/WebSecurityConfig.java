@@ -50,16 +50,13 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
 
                                 .requestMatchers("/", "/login").permitAll()
+                                 .requestMatchers("/", "/user").permitAll()
                                 .requestMatchers("/", "/store").authenticated()
                                 .requestMatchers("/", "/basket").authenticated()
-/*
-                        .requestMatchers("/", "/home").permitAll()
-                        .requestMatchers("/", "/products").permitAll()
-                        .requestMatchers("/", "/cart").permitAll()
-                        .requestMatchers("/", "/logout").permitAll()
 
-                        */
-                        .requestMatchers( "/user").hasRole("*").anyRequest().permitAll()
+                                //allows register page through
+                                .requestMatchers( "/user").hasRole("*").anyRequest().permitAll()
+
 
 
 
@@ -70,18 +67,12 @@ public class WebSecurityConfig {
                 .httpBasic(withDefaults());
 
 
-
-
-
         http.csrf(csrf -> csrf.disable())
-
 
                 .logout(logout -> logout.logoutUrl("/logout")
 
 
                                 .addLogoutHandler((request, response, auth) -> {
-
-                                    System.err.println("auth=" +  request.getHeaderNames());
                                     for (Cookie cookie : request.getCookies()) {
 
                                         System.err.println(cookie.getName());
@@ -102,6 +93,7 @@ public class WebSecurityConfig {
         http
                 .csrf().disable()
                 .formLogin()
+
                 .loginPage("/login");
 
 
